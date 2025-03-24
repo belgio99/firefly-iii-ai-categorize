@@ -88,6 +88,7 @@ export default class App {
         try {
             console.info("Webhook triggered");
             debug("Webhook request received:", req.body);
+            debug("Transaction content", req.body?.content?.transactions[0]);
             this.#handleWebhook(req, res);
             res.send("Queued");
         } catch (e) {
@@ -119,7 +120,7 @@ export default class App {
             throw new WebhookException("content.transactions[0].type has to be 'withdrawal'. Transaction will be ignored.");
         }
 
-        if (req.body.content.transactions[0].category_id !== null) {
+        if (req.body.content.transactions[0].category_id) {
             throw new WebhookException("content.transactions[0].category_id is already set. Transaction will be ignored.");
         }
 
